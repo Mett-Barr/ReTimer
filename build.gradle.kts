@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.mettbarr"
-version = "1.0.0"
+version = "1.1.2"
 
 repositories {
     mavenCentral()
@@ -42,7 +42,7 @@ publishing {
 
             groupId = "com.github.mettbarr"
             artifactId = "retimer"
-            version = "1.0.0"
+            version = "1.1.2"
         }
     }
 }
