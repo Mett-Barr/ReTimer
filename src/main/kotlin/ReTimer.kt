@@ -8,16 +8,18 @@ import java.lang.System
  * A timer that can be restarted, useful for tasks that need to be deferred until
  * a certain period of inactivity (e.g., user input events).
  *
- * @property timeoutIntervalMs The timeout interval in milliseconds after which [onTimeout] will be triggered.
+ * @property interval The timeout interval in milliseconds after which [onTimeout] will be triggered.
  * @property scope The [CoroutineScope] in which the timer will run.
+ * @property onStartOrRestart The action to perform when the timer is started or restarted.
  * @property onTimeout The action to perform when the timer expires.
  */
 class ReTimer(
-    private val timeoutIntervalMs: Long,
+    private val interval: Long,
     private val scope: CoroutineScope,
+    var onStartOrRestart: () -> Unit,
     var onTimeout: () -> Unit
 ) {
-    private var nextTimeoutTime = System.currentTimeMillis() + timeoutIntervalMs
+    private var nextTimeoutTime = System.currentTimeMillis() + interval
     @Volatile private var isMonitoring = false
     @Volatile private var isCancelled = false
 
@@ -27,14 +29,15 @@ class ReTimer(
      */
     fun startOrRestart() {
         isCancelled = false
-        nextTimeoutTime = System.currentTimeMillis() + timeoutIntervalMs
+        nextTimeoutTime = System.currentTimeMillis() + interval
         if (!isMonitoring) {
             isMonitoring = true
             scope.launch {
-                delay(timeoutIntervalMs)
+                delay(interval)
                 monitorTimeout()
             }
         }
+        onStartOrRestart()
     }
 
     /**
