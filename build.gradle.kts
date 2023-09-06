@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.9.0"
     application
+    id("maven-publish")
 }
 
 group = "com.github.mettbarr"
@@ -32,4 +33,16 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("MainKt")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            groupId = "com.github.mettbarr"
+            artifactId = "retimer"
+            version = "1.0.0"
+        }
+    }
 }
