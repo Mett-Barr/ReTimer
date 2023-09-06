@@ -1,3 +1,4 @@
+[English](README.md) | [中文](README_zh.md)
 # ReTimer
 A restartable timer suitable for deferring tasks or for tasks that require a reset of the timing.
 ## Features
